@@ -1,0 +1,144 @@
+\documentclass[11pt]{hcmut-report}
+
+% ---------- BASIC PACKAGES ----------
+\usepackage[utf8]{inputenc}          % UTF-8 encoding (keep if using pdflatex)
+\usepackage{graphicx}                % For images
+\usepackage{float}                   % For [H] placement
+\usepackage[table]{xcolor}           % Table colors
+\usepackage{booktabs, longtable, makecell, array, multicol, multirow, siunitx, tabularx}
+\usepackage{gensymb, textcomp}       % Symbols like degree, trademark, etc.
+
+% ---------- CAPTIONS AND SUBCAPTIONS ----------
+\usepackage{caption}
+\usepackage{subcaption}
+
+% ---------- CODE + OUTPUT STYLING ----------
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{listings, skins, breakable}
+\usepackage{amssymb}
+
+% Python code style
+\lstdefinestyle{pythonStyle}{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    stringstyle=\color{teal},
+    commentstyle=\color{gray},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    tabsize=4
+}
+
+% Output box
+\newtcolorbox{outputbox}{
+  enhanced,
+  breakable,
+  colback=gray!5!white,
+  colframe=black!70!white,
+  fonttitle=\bfseries,
+  title=Output,
+  boxrule=0.4pt,
+  left=4pt,
+  right=4pt,
+  top=2pt,
+  bottom=2pt,
+  listing only,
+  width=\textwidth,
+  listing options={
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    showstringspaces=false,
+    numbers=none,
+    frame=none,
+    aboveskip=4pt,    % space above
+    belowskip=4pt,    % space below
+    columns=fixed,
+    keepspaces=true
+  }
+}
+
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable, skins}
+
+% New box for Python output only
+\newtcolorbox{Numbox}{
+  enhanced,
+  breakable,
+  colback=gray!5!white,
+  colframe=black!70!white,
+  fonttitle=\bfseries,
+  title=Python Output,
+  boxrule=0.4pt,
+  left=4pt,
+  right=4pt,
+  top=2pt,
+  bottom=2pt,
+  sharp corners,
+  boxsep=4pt,
+  before skip=6pt,
+  after skip=6pt,
+  enhanced jigsaw,
+  frame hidden,
+}
+
+
+
+% ---------- DOCUMENT FORMATTING ----------
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{enumitem}                % Better enumerate/itemize
+\usepackage{tocloft}                 % Custom ToC control
+\usepackage{xparse}                  % For custom command definitions
+\usepackage{fancyvrb}                % For better verbatim
+
+% ---------- CUSTOM COMMAND ----------
+\NewDocumentCommand{\addlabcontentsline}{mmm}{%
+  \addtocontents{toc}{%
+    \noindent\textbf{#1}%
+    \hfill \textbf{#2}%
+    \hfill \textbf{#3}\par
+  }%
+}
+
+% ---------- INDEX ----------
+\usepackage{makeidx}
+\makeindex
+
+% ---------- DOCUMENT BEGINS ----------
+\begin{document}
+
+\pagenumbering{roman}
+\include{title_page}
+
+\tableofcontents
+\clearpage
+\listoffigures
+\clearpage
+% \listoftables
+\clearpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% ---------- LAB INCLUSIONS ----------
+\include{Lab1/Lab_1}
+% \include{Lab2/Lab_2}
+% \include{Lab3/Lab_3}
+% \include{Lab4/Lab_4}
+% \include{Lab4_1/Lab_4_1}
+% \include{Lab5/Lab_5}
+% \include{Lab6/Lab_6}
+% \include{Lab7/Lab_7}
+% \include{Lab8/Lab_8}
+\clearpage
+% \bibliographystyle{plainnat}
+% \bibliography{refs/example.bib}
+% \nocite{*}
+% \printindex
+
+\end{document}

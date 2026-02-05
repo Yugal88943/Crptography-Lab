@@ -1,0 +1,748 @@
+%-----------------------------------------------
+% Assignment 6: Image Compression
+%-----------------------------------------------
+\setcounter{section}{6}       
+\refstepcounter{section}     
+\renewcommand{\thesection}{\arabic{section}} 
+
+% --- Add to ToC with date ---
+\addcontentsline{toc}{section}
+  {Assignment \thesection: Edge Detection and Image Segmentation \hfill 17-11-2025}
+
+% --- Centered visible title ---
+\section*{\centering Assignment \thesection: Edge Detection and Image Segmentation}
+    
+% --- Objective text ---
+\noindent \textbf{Objective:} To understand and implement different edge detection techniques like Sobel, Prewitt, Canny, LoG. To explore image segmentation methods including global thresholding,
+Otsu's method, region growing, and region splitting \& merging.
+
+\vspace{-1em}
+\setcounter{subsection}{0}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+%-----------------------------------------------
+% Task 1
+%-----------------------------------------------
+\subsection{Task 1: Edge Detection - Comparative Study}
+\subsubsection*{Code Implementation}
+\begin{lstlisting}[style=pythonStyle]
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# -------------------------------------------------------
+# STEP 1: Load image and convert to gray
+# -------------------------------------------------------
+img = cv2.imread("/home/yugal/Desktop/Python Programs IP LAB/Lab 7/task1.jpeg")
+save_path = "Results/"
+
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+# -------------------------------------------------------
+# STEP 2: Sobel Operator
+# -------------------------------------------------------
+sobel_x = cv2.Sobel(gray, cv2.CV_64F, 1, 0, ksize=3)
+sobel_y = cv2.Sobel(gray, cv2.CV_64F, 0, 1, ksize=3)
+sobel = cv2.magnitude(sobel_x, sobel_y)
+# -------------------------------------------------------
+# STEP 3: Prewitt Operator (manually defined kernels)
+# -------------------------------------------------------
+kernelx = np.array([[1,0,-1],
+                    [1,0,-1],
+                    [1,0,-1]], dtype=np.float32)
+kernely = np.array([[1,1,1],
+                    [0,0,0],
+                    [-1,-1,-1]], dtype=np.float32)
+
+prewitt_x = cv2.filter2D(gray, -1, kernelx)
+prewitt_y = cv2.filter2D(gray, -1, kernely)
+prewitt = cv2.magnitude(prewitt_x.astype(float), prewitt_y.astype(float))
+# -------------------------------------------------------
+# STEP 4: Canny Edge Detector
+# -------------------------------------------------------
+canny = cv2.Canny(gray, 80,100)
+# -------------------------------------------------------
+# STEP 5: Laplacian of Gaussian (LoG)
+# -------------------------------------------------------
+blur = cv2.GaussianBlur(gray, (5,5),1)
+log = cv2.Laplacian(blur, cv2.CV_64F)
+# -------------------------------------------------------
+# STEP 6: Display Results
+# -------------------------------------------------------
+plt.figure(figsize=(12,8))
+
+plt.subplot(2,3,1)
+plt.title("Original Gray")
+plt.imshow(gray, cmap='gray')
+plt.axis("off")
+
+plt.subplot(2,3,2)
+plt.title("Sobel")
+plt.imshow(sobel, cmap='gray')
+plt.axis("off")
+
+plt.subplot(2,3,3)
+plt.title("Prewitt")
+plt.imshow(prewitt, cmap='gray')
+plt.axis("off")
+
+plt.subplot(2,3,4)
+plt.title("Canny")
+plt.imshow(canny, cmap='gray')
+plt.axis("off")
+
+plt.subplot(2,3,5)
+plt.title("LoG")
+plt.imshow(log, cmap='gray')
+plt.axis("off")
+
+plt.tight_layout()
+plt.savefig(save_path + "experiment2_edges.png", dpi=300)
+# -------------------------------------------------------
+# STEP 7: Reflection
+# -------------------------------------------------------
+print("\n--- Reflection ---")
+print("""
+Comparison of Edge Detection Methods:
+
+Sobel:
+- Highlights strong edges well.
+- Thick edges, sometimes noisy.
+- Good for detecting general gradients.
+
+Prewitt:
+- Very similar to Sobel but slightly weaker.
+- More sensitive to noise.
+- Good for simple gradient detection.
+
+Canny:
+- Gives the cleanest and thinnest boundaries.
+- Uses Gaussian smoothing + gradient + hysteresis.
+- Very robust against noise.
+
+LoG (Laplacian of Gaussian):
+- Detects many edges, including weak ones.
+- Also picks up noise if smoothing is low.
+- Good for detecting fine details and texture.
+
+Which detects most edges?
+→ LoG detects the most because it finds all zero-crossings after Gaussian smoothing.
+
+Which gives the cleanest boundary?
+→ Canny gives sharp, thin, continuous edges.
+
+Sensitivity to noise:
+→ Prewitt > Sobel > LoG (moderate) > Canny (least sensitive)
+
+Conclusion:
+- Canny is best when you need clean edges.
+- Sobel/Prewitt are good for basic gradient-based edges.
+- LoG is useful when fine detail or texture edges matter.
+""")
+\end{lstlisting}
+\begin{outputbox}
+--- Reflection ---
+
+Comparison of Edge Detection Methods:
+
+Sobel:
+
+- Highlights strong edges well.
+
+- Thick edges, sometimes noisy.
+
+- Good for detecting general gradients.
+
+Prewitt:
+
+- Very similar to Sobel but slightly weaker.
+
+- More sensitive to noise.
+
+- Good for simple gradient detection.
+
+Canny:
+
+- Gives the cleanest and thinnest boundaries.
+
+- Uses Gaussian smoothing + gradient + hysteresis.
+
+- Very robust against noise.
+
+LoG (Laplacian of Gaussian):
+
+- Detects many edges, including weak ones.
+
+- Also picks up noise if smoothing is low.
+
+- Good for detecting fine details and texture.
+
+Which detects most edges?
+
+→ LoG detects the most because it finds all zero-crossings after Gaussian smoothing.
+
+Which gives the cleanest boundary?
+
+→ Canny gives sharp, thin, continuous edges.
+
+Sensitivity to noise:
+
+→ Prewitt > Sobel > LoG (moderate) > Canny (least sensitive)
+
+Conclusion:
+
+- Canny is best when you need clean edges.
+
+- Sobel/Prewitt are good for basic gradient-based edges.
+
+- LoG is useful when fine detail or texture edges matter.
+
+\end{outputbox}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Lab7/Results/experiment2_edges.png}
+    \caption{Edge Detection Results}
+\end{figure}
+
+%-----------------------------------------------
+% Task 2
+%-----------------------------------------------
+\subsection{Task 2: Edge Detection on Noisy Image.}
+\subsubsection*{Code Implementation}
+\begin{lstlisting}[style=pythonStyle]
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# -------------------------------------------------------
+# STEP 1: Load image and convert to grayscale
+# -------------------------------------------------------
+img = cv2.imread("/home/yugal/Desktop/Python Programs IP LAB/Lab 7/task1.jpeg")
+save_path = "Results/"
+
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+# -------------------------------------------------------
+# STEP 2: Add Gaussian Noise
+# mean = 0, variance = 25 (can adjust)
+# -------------------------------------------------------
+noise = np.random.normal(0,10,gray.shape)
+noisy_img = gray + noise
+noisy_img = np.clip(noisy_img, 0, 255).astype(np.uint8)
+
+# -------------------------------------------------------
+# STEP 3: Sobel Edge Detection
+# -------------------------------------------------------
+sobel_x = cv2.Sobel(noisy_img, cv2.CV_64F, 1, 0, ksize=3)
+sobel_y = cv2.Sobel(noisy_img, cv2.CV_64F, 0, 1, ksize=3)
+sobel = cv2.magnitude(sobel_x, sobel_y)
+# -------------------------------------------------------
+# STEP 4: Prewitt Edge Detection
+# -------------------------------------------------------
+kernelx = np.array([[1, 0, -1],
+                    [1, 0, -1],
+                    [1, 0, -1]], dtype=np.float32)
+kernely = np.array([[1,1,1],
+                    [0,0,0],
+                    [-1,-1,-1]], dtype=np.float32)
+prewitt_x = cv2.filter2D(noisy_img, -1, kernelx)
+prewitt_y = cv2.filter2D(noisy_img, -1, kernely)
+prewitt = cv2.magnitude(prewitt_x.astype(float), prewitt_y.astype(float))
+# -------------------------------------------------------
+# STEP 5: Canny Edge Detection
+# -------------------------------------------------------
+smooth = cv2.GaussianBlur(noisy_img, (5,5),1)
+canny = cv2.Canny(noisy_img, 100, 200)
+# -------------------------------------------------------
+# STEP 6: LoG (Laplacian of Gaussian)
+# -------------------------------------------------------
+blur = cv2.GaussianBlur(noisy_img, (5,5), 1)
+log = cv2.Laplacian(blur, cv2.CV_64F)
+# -------------------------------------------------------
+# STEP 7: Display Results
+# -------------------------------------------------------
+plt.figure(figsize=(12,8))
+
+plt.subplot(2,3,1)
+plt.title("Original Gray")
+plt.imshow(gray, cmap='gray')
+plt.axis("off")
+
+plt.subplot(2,3,2)
+plt.title("Noisy Image")
+plt.imshow(noisy_img, cmap='gray')
+plt.axis("off")
+
+plt.subplot(2,3,3)
+plt.title("Sobel (Noisy)")
+plt.imshow(sobel, cmap='gray')
+plt.axis("off")
+
+plt.subplot(2,3,4)
+plt.title("Prewitt (Noisy)")
+plt.imshow(canny, cmap='gray')
+plt.axis("off")
+
+plt.subplot(2,3,5)
+plt.title("Canny (Noisy)")
+plt.imshow(canny, cmap='gray')
+plt.axis("off")
+
+plt.subplot(2,3,6)
+plt.title("LoG (Noisy)")
+plt.imshow(log, cmap='gray')
+plt.axis("off")
+
+plt.tight_layout()
+plt.savefig(save_path + "experment3_noisy_edges.png", dpi=300)
+plt.show()
+
+
+# -------------------------------------------------------
+# STEP 8: Reflection
+# -------------------------------------------------------
+print("\n--- Reflection ---")
+print("""
+Which method performs best under noise?
+
+Sobel:
+- Produces thick and noisy edges.
+- Noise significantly increases false edges.
+
+Prewitt:
+- Even more sensitive to noise than Sobel.
+- Many random edges appear.
+
+Canny:
+- Performs the best under noise.
+- Uses Gaussian smoothing + double threshold.
+- Filters weak/noisy edges effectively.
+
+LoG:
+- Moderate performance.
+- Gaussian part reduces noise, but Laplacian amplifies fine noise.
+- Detects a lot of edges, including unwanted ones.
+
+Best method under noise:
+→ Canny (clearest, most stable edges)
+
+Preprocessing suggestions:
+
+1. Gaussian Blur:
+   - Smooths small noise before edge detection.
+   - Helps Sobel and Prewitt significantly.
+
+2. Median Filter:
+   - Very good for salt-and-pepper noise.
+   - Keeps edges sharper than Gaussian.
+
+3. Bilateral Filtering:
+   - Reduces noise while preserving edges.
+   - Excellent if you want detail + smoothing.
+
+Conclusion:
+- Canny is best in noisy environments due to built-in smoothing.
+- Sobel and Prewitt require preprocessing to work well.
+- LoG detects many edges but may amplify noise unless blur is strong.
+""")
+
+\end{lstlisting}
+\begin{outputbox}
+--- Reflection ---
+
+Which method performs best under noise?
+
+Sobel:
+
+- Produces thick and noisy edges.
+
+- Noise significantly increases false edges.
+
+Prewitt:
+- Even more sensitive to noise than Sobel.
+
+- Many random edges appear.
+
+Canny:
+
+- Performs the best under noise.
+
+- Uses Gaussian smoothing + double threshold.
+
+- Filters weak/noisy edges effectively.
+
+LoG:
+- Moderate performance.
+
+- Gaussian part reduces noise, but Laplacian amplifies fine noise.
+
+- Detects a lot of edges, including unwanted ones.
+
+Best method under noise:
+
+→ Canny (clearest, most stable edges)
+
+Preprocessing suggestions:
+
+1. Gaussian Blur:
+
+   - Smooths small noise before edge detection.
+
+   - Helps Sobel and Prewitt significantly.
+
+2. Median Filter:
+
+   - Very good for salt-and-pepper noise.
+
+   - Keeps edges sharper than Gaussian.
+
+3. Bilateral Filtering:
+
+   - Reduces noise while preserving edges.
+
+   - Excellent if you want detail + smoothing.
+
+Conclusion:
+
+- Canny is best in noisy environments due to built-in smoothing.
+
+- Sobel and Prewitt require preprocessing to work well.
+
+- LoG detects many edges but may amplify noise unless blur is strong.
+
+\end{outputbox}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Lab7/Results/experment3_noisy_edges.png}
+    \caption{Noisy Edges Detection Results}
+\end{figure}
+
+%-----------------------------------------------
+% Task 3
+%-----------------------------------------------
+\subsection{Task 3: Image Segmentation - Thresholding}
+\subsubsection*{Code Implementation}
+\begin{lstlisting}[style=pythonStyle]
+import cv2
+import matplotlib.pyplot as plt
+
+img = cv2.imread("/home/yugal/Desktop/Python Programs IP LAB/Lab 7/task3.jpg")
+save_path = "Results/"
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+# ---------------------------------------------
+# STEP 2: Global Thresholding
+# Choosing a fixed threshold value (e.g., 120)
+# ---------------------------------------------
+ret1, gloabal_thresh = cv2.thresh = cv2.threshold(gray, 120, 255, cv2.THRESH_BINARY)
+
+# ---------------------------------------------
+# STEP 3: Otsu Thresholding
+# Otsu automatically finds the best threshold
+# ---------------------------------------------
+ret2, otsu_thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+plt.figure(figsize=(12,6))
+
+plt.subplot(1,3,1)
+plt.title("Original Gray Image")
+plt.imshow(gray, cmap='gray')
+plt.axis("off")
+
+plt.subplot(1,3,2)
+plt.title(f"Global Thresholding\nThreshold = 120")
+plt.imshow(gloabal_thresh, cmap='gray')
+plt.axis("off")
+
+plt.subplot(1,3,3)
+plt.title(f"Otsu Thresholding\nThreshold = {ret2:.2f}")
+plt.imshow(otsu_thresh, cmap='gray')
+plt.axis("off")
+
+plt.savefig(save_path + "segmentation_result.png", dpi=300, bbox_inches='tight')
+
+plt.show()
+
+print("\n--- Reflection ---")
+print("Comparison between Global Thresholding and Otsu's Method:")
+print("""
+Global Thresholding:
+- Uses a single fixed threshold value chosen manually.
+- Works only when lighting is uniform across the image.
+- If parts of the image are brighter/darker, segmentation quality drops.
+
+Otsu's Method:
+- Automatically calculates the best threshold by analyzing image histogram.
+- Separates foreground and background by minimizing within-class variance.
+- Performs better when image has varying brightness or multiple intensity ranges.
+
+Conclusion:
+- Otsu's Method adapts better to varying lighting conditions.
+- Global Thresholding is simple but not reliable when illumination changes.
+""")
+
+\end{lstlisting}
+\begin{outputbox}
+--- Reflection ---
+
+Comparison between Global Thresholding and Otsu's Method:
+
+Global Thresholding:
+
+- Uses a single fixed threshold value chosen manually.
+
+- Works only when lighting is uniform across the image.
+
+- If parts of the image are brighter/darker, segmentation quality drops.
+
+Otsu's Method:
+
+- Automatically calculates the best threshold by analyzing image histogram.
+
+- Separates foreground and background by minimizing within-class variance.
+
+- Performs better when image has varying brightness or multiple intensity ranges.
+
+Conclusion:
+
+- Otsu's Method adapts better to varying lighting conditions.
+
+- Global Thresholding is simple but not reliable when illumination changes.
+
+\end{outputbox}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Lab7/Results/segmentation_result.png}
+    \caption{Segmentation Results}
+\end{figure}
+
+%-----------------------------------------------
+% Task 4
+%-----------------------------------------------
+\subsection{Task 4: Image Segmentation - Region Growing}
+\subsubsection*{Code Implementation}
+\begin{lstlisting}[style=pythonStyle]
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Load image
+img = cv2.imread("/home/yugal/Desktop/Python Programs IP LAB/Lab 7/task4.jpg")
+save_path = "Results/"
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+# *** VALID SEED BASED ON YOUR IMAGE SIZE (183, 275) ***
+seed = (90, 120)    # <-- banana
+
+threshold = 12
+
+seg = np.zeros_like(gray)
+stack = [seed]
+
+while stack:
+    x, y = stack.pop()
+    seg[x, y] = 255
+
+    for dx, dy in [(-1,0),(1,0),(0,-1),(0,1)]:
+        nx, ny = x + dx, y + dy
+
+        if 0 <= nx < gray.shape[0] and 0 <= ny < gray.shape[1]:
+            if seg[nx, ny] == 0:
+                if abs(int(gray[nx, ny]) - int(gray[x, y])) < threshold:
+                    stack.append((nx, ny))
+
+# Display
+plt.figure(figsize=(12,6))
+plt.subplot(1,2,1)
+plt.title("Original Image")
+plt.imshow(gray, cmap='gray')
+plt.axis("off")
+
+plt.subplot(1,2,2)
+plt.title(f"Region Growing (Seed={seed})")
+plt.imshow(seg, cmap='gray')
+plt.axis("off")
+
+plt.tight_layout()
+plt.savefig(save_path + "experment4_region_growing.png", dpi=300)
+plt.show()
+
+print("\n--- Reflection ---")
+print("""
+Region Splitting & Merging:
+- The image is split into small homogeneous regions and similar regions are merged.
+- Works well on images with multiple textures and uneven lighting.
+
+Advantages:
+- Better object separation than simple thresholding.
+- Handles intensity variations more effectively.
+
+Disadvantages:
+- Slower and depends on parameters (scale, sigma, min_size).
+- Can over-segment if parameters are not tuned properly.
+
+Comparison:
+- Thresholding is simple but fails on complex images.
+- Splitting & merging gives smoother, more meaningful regions.
+""")
+
+
+\end{lstlisting}
+\begin{outputbox}
+--- Reflection ---
+
+Region Splitting and Merging:
+
+- The image is split into small homogeneous regions and similar regions are merged.
+
+- Works well on images with multiple textures and uneven lighting.
+
+Advantages:
+
+- Better object separation than simple thresholding.
+
+- Handles intensity variations more effectively.
+
+Disadvantages:
+
+- Can over-segment if parameters are not tuned properly.
+
+Comparison:
+
+- Thresholding is simple but fails on complex images.
+
+- Splitting and merging gives smoother, more meaningful regions.
+
+\end{outputbox}
+
+\begin{figure}[H]
+    \centering
+        \includegraphics[width=\textwidth]{Lab7/Results/experment4_region_growing.png}
+        \caption{Region Growing Results}
+\end{figure}
+
+%-----------------------------------------------
+% Task 5
+%-----------------------------------------------
+\subsection{Task 5: Image Segmentation - Region Splitting and Merging}
+\subsubsection*{Code Implementation}
+\begin{lstlisting}[style=pythonStyle]
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+from skimage import segmentation, color, filters
+
+# -------------------------------------------------------
+# STEP 1: Load and convert to grayscale
+# -------------------------------------------------------
+img = cv2.imread("/home/yugal/Desktop/Python Programs IP LAB/Lab 7/task4.jpg")
+save_path = "Results/"
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+# -------------------------------------------------------
+# STEP 2: Region Splitting and Merging (Felzenszwalb)
+# Automatically splits image into uniform intensity regions
+# -------------------------------------------------------
+segments = segmentation.felzenszwalb(gray, scale=100, sigma=0.9, min_size=50)
+
+# Colored output for visualization
+seg_colored = color.label2rgb(segments, gray, kind='avg')
+
+# -------------------------------------------------------
+# STEP 3: Thresholding for Comparison
+# -------------------------------------------------------
+th = filters.threshold_otsu(gray)
+th_img = (gray > th).astype(np.uint8) * 255
+
+# -------------------------------------------------------
+# STEP 4: Display results
+# -------------------------------------------------------
+plt.figure(figsize=(15,6))
+
+plt.subplot(1,3,1)
+plt.title("Original Image")
+plt.imshow(gray, cmap='gray')
+plt.axis("off")
+
+plt.subplot(1,3,2)
+plt.title("Region Splitting and Merging")
+plt.imshow(seg_colored)
+plt.axis("off")
+
+plt.subplot(1,3,3)
+plt.title(f"Thresholding (Otsu)\nThreshold={th}")
+plt.imshow(th_img, cmap='gray')
+plt.axis("off")
+
+plt.tight_layout()
+plt.savefig(save_path + "experment5_region_splitting_and_merging.png", dpi=300)
+plt.show()
+
+# -------------------------------------------------------
+# STEP 5: Reflection
+# -------------------------------------------------------
+print("\n--- Reflection ---")
+print("""
+Region Splitting and Merging:
+- Automatically divides image into small homogeneous regions.
+- Then merges similar regions based on intensity.
+- Good for complex images with multiple textures and objects.
+
+Advantages:
+- Handles varying intensity well.
+- Produces meaningful region boundaries.
+- More robust than simple thresholding.
+
+Disadvantages:
+- Slower than thresholding.
+- Parameters (scale, sigma, min_size) affect output.
+- Might over-segment if parameters are not tuned.
+
+Comparison with Thresholding:
+- Thresholding is fast and simple but fails on complex images.
+- Splitting and merging gives better object separation.
+""")
+
+\end{lstlisting}
+\begin{outputbox}
+--- Reflection ---
+
+Region Splitting and Merging:
+
+- Automatically divides image into small homogeneous regions.
+
+- Then merges similar regions based on intensity.
+
+- Good for complex images with multiple textures and objects.
+
+Advantages:
+
+- Handles varying intensity well.
+
+- Produces meaningful region boundaries.
+
+- More robust than simple thresholding.
+
+Disadvantages:
+
+- Slower than thresholding.
+
+- Might over-segment if parameters are not tuned.
+
+Comparison with Thresholding:
+
+- Thresholding is fast and simple but fails on complex images.
+
+- Splitting and merging gives better object separation.
+
+\end{outputbox}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Lab7/Results/experment5_region_splitting_and_merging.png}
+    \caption{Region Splitting and Merging Results}
+\end{figure}
+
+
+
+

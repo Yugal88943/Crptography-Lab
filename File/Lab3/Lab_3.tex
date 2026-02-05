@@ -1,0 +1,566 @@
+%-----------------------------------------------
+% Assignment 3: Fundamental Image Processing Techniques Using Python
+%-----------------------------------------------
+\refstepcounter{section}
+% \addlabcontentsline{Assignment \thesection: Fundamental Image Processing Techniques}{28-07-2025}{\thepage}
+\addlabcontentsline{Assignment~\thesection: Fundamental Image Processing Techniques}{15-09-2025}{\thepage}
+
+\section*{\centering Assignment \thesection: Fundamental Image Processing Techniques}
+
+\noindent \textbf{Objective:} To apply fundamental image processing techniques using Python. This assignment focuses on
+real-world mini-tasks including image manipulation, sampling, color conversion, and
+neighborhood filtering. The goal is to develop a solid foundation in working with digital images
+programmatically.
+\vspace{-1em}
+
+
+%-----------------------------------------------
+% Task 1
+%-----------------------------------------------
+\subsection{Task 1:  Create an ID Card Image with Name and Roll Number Overlay}
+
+
+\vspace{-0.1em}
+\subsubsection*{Code Implementation}
+% \vspace{-1em}
+\begin{lstlisting}[style=pythonStyle, caption={}]
+import cv2
+
+# Load image
+img = cv2.imread("/home/yugal/Desktop/Python Programs IP LAB/LAB 3/sample_photo.jpg")
+
+# Resize to 150x150
+img = cv2.resize(img, (150, 150))
+
+# Overlay text (keep it readable and centered)
+cv2.putText(img, "Name: Yugal", (20, 80), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 0), 1, cv2.LINE_AA)
+cv2.putText(img, "Roll: 25903053", (20, 100), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 0), 1, cv2.LINE_AA)
+
+# Add white border
+id_card = cv2.copyMakeBorder(img, 10, 10, 10, 10, cv2.BORDER_CONSTANT, value=[255, 255, 255])
+
+# Save output
+cv2.imwrite("id_card_output.jpg", id_card)
+
+print("ID Card saved as id_card_output.jpg")
+    
+\end{lstlisting}
+
+\vspace{1em} 
+% \subsubsection*{Output}
+\begin{outputbox}
+\begin{verbatim}
+
+ID Card saved as id_card_output.jpg
+
+\end{verbatim}
+\end{outputbox}
+
+\vspace{-1.5em}
+\subsubsection*{Output}
+\begin{figure}[H]
+    \centering
+    \vspace{-3em}
+    \includegraphics[width=0.3\textwidth]{Lab3/id_card_output.jpg}
+    \caption{ID Card Output}
+    \label{fig:id_card_output}
+    \vspace{-1em}
+\end{figure}
+
+%-----------------------------------------------
+% Task 2
+%-----------------------------------------------
+\subsection{Task 2: Convert a color image to Grayscale, HSV, and LAB and compare for edge detection.
+}
+
+
+\vspace{-0.1em}
+\subsubsection*{Code Implementation}
+% \vspace{-1em}
+\begin{lstlisting}[style=pythonStyle, caption={}]
+import cv2
+import matplotlib.pyplot as plt
+
+img = cv2.imread("/home/yugal/Desktop/Python Programs IP LAB/LAB 3/task_2.jpg")
+img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)   # convert BGR -> RGB for matplotlib
+
+gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+hsv_image = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+lab_image = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+
+# Plot all versions
+plt.figure(figsize=(10,8))
+
+plt.subplot(2,2,1)
+plt.imshow(img_rgb)
+plt.title("Original Image")
+# plt.savefig("Original_Image.png")
+plt.axis("off")
+
+plt.subplot(2,2,2)
+plt.imshow(gray_image, cmap="gray")
+plt.title("Grayscale")
+# plt.savefig("Grayscale_Image.png")
+plt.axis("off")
+
+plt.subplot(2,2,3)
+plt.imshow(cv2.cvtColor(hsv_image, cv2.COLOR_HSV2RGB))  # fix colors for matplotlib
+plt.title("HSV")
+# plt.savefig("HSV_Image.png")
+plt.axis("off")
+
+plt.subplot(2,2,4)
+plt.imshow(cv2.cvtColor(lab_image, cv2.COLOR_LAB2RGB))  # fix colors for matplotlib
+plt.title("LAB")
+# plt.savefig("LAB_Image.png")
+plt.axis("off")
+
+plt.suptitle("Grayscale is best for edge detection; HSV is effective for segmentation.", fontsize=12)
+plt.savefig("Output.png")
+plt.show()
+    
+\end{lstlisting}
+
+% \vspace{1em} 
+% \subsubsection*{Output}
+\vspace{-1.5em}
+\subsubsection*{Output}
+\begin{figure}[H]
+    \centering
+    \vspace{-2em}
+    \includegraphics[width=1.0\textwidth]{Lab3/Output.png}
+    \caption{Grayscale, HSV, and LAB Comparison}
+    \label{fig:grayscale_hsv_lab_comparison}
+    \vspace{-1em}
+\end{figure}
+
+%-----------------------------------------------
+% Task 3
+%-----------------------------------------------
+\subsection{Task 3: Perform resizing, rotation, and vertical flip on an image and save results.}
+
+
+\vspace{-0.1em}
+\subsubsection*{Code Implementation}
+% \vspace{-1em}
+\begin{lstlisting}[style=pythonStyle, caption={Resize to 50 percentage and 200 percentage of original size}]
+import cv2
+
+import matplotlib.pyplot as plt
+
+# Load image
+img = cv2.imread("/home/yugal/Desktop/Python Programs IP LAB/LAB 3/task_3.jpg")
+img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+# Resize images
+resized_50 = cv2.resize(img, None, fx=0.5, fy=0.5)
+resized_50_rgb = cv2.cvtColor(resized_50, cv2.COLOR_BGR2RGB)
+
+resized_200 = cv2.resize(img, None, fx=2.0, fy=2.0)
+resized_200_rgb = cv2.cvtColor(resized_200, cv2.COLOR_BGR2RGB)
+
+# Helper function to show and save figure
+def show_and_save(image, title, filename):
+    h, w = image.shape[:2]
+    plt.figure(figsize=(w/100, h/100))  # keep actual size
+    plt.imshow(image)
+    plt.title(f"{title} ({w}x{h})")
+    plt.axis("off")
+    plt.savefig(filename, dpi=100, bbox_inches="tight")
+    plt.show()
+
+# Display and save separately
+
+show_and_save(img_rgb, "Original Image", "original_image.png")
+
+show_and_save(resized_50_rgb, "50% Resize", "resize_50_image.png")
+
+show_and_save(resized_200_rgb, "200% Resize", "resize_200_image.png")
+    
+\end{lstlisting}
+
+\vspace{1em} 
+% \subsubsection*{Output}
+\vspace{-1.5em}
+\subsubsection*{Output}
+\begin{figure}[H]
+    \centering
+    \vspace{-2em}
+    \includegraphics[width=0.6\textwidth]{Lab3/Original_Image.png}
+    \caption{Original Image}
+    \label{fig:original_image_mountain}
+    \vspace{-1em}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    % \vspace{-2em}
+    \includegraphics[width=0.4\textwidth]{Lab3/resize_50_image.png}
+    \caption{50 percentage Resize}
+    \label{fig:resize_50_image}
+    \vspace{-1em}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \vspace{-2em}
+    \includegraphics[width=1.0\textwidth]{Lab3/resize_200_image.png}
+    \caption{200 percentage Resize}
+    \label{fig:resize_200_image}
+    \vspace{-1em}
+\end{figure}
+
+\begin{lstlisting}[style=pythonStyle, caption={Rotate by 45 degrees and Flip vertically}]
+import cv2
+
+img = cv2.imread("/home/yugal/Desktop/Python Programs IP LAB/LAB 3/task_3.jpg")
+
+(h , w) = img.shape[:2]
+center = (w // 2, h//2)
+
+M = cv2.getRotationMatrix2D(center, 45, 1.0)
+
+#warpAffine actually applies the rotation matrix M to the image.
+rotated = cv2.warpAffine(img, M, (w,h))
+
+flipped = cv2.flip(img, 0) # 0 means upside down
+
+cv2.imshow("Originial Image ", img)
+cv2.imshow("Rotated 45",rotated)
+cv2.imshow("Flipped Vertically ",flipped)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+cv2.imwrite("flipped_image.jpg", flipped)
+cv2.imwrite("rotated_image.jpg", rotated)
+
+print("Flipped Image Saved")
+print("Vertical Image Saved")
+    
+\end{lstlisting}
+
+\begin{figure}[H]
+    \centering
+    % \vspace{-2em}
+    \includegraphics[width=0.4\textwidth]{Lab3/flipped_image.jpg}
+    \caption{Flipped Image}
+    \label{fig:flipped_image}
+    \vspace{-1em}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    % \vspace{-2em}
+    \includegraphics[width=0.4\textwidth]{Lab3/rotated_image.jpg}
+    \caption{Rotated Image}
+    \label{fig:rotated_image}
+    \vspace{-1em}
+\end{figure}
+
+%-----------------------------------------------
+% Task 4
+%-----------------------------------------------
+\subsection{Task 4: Downsample and upsample an image using different interpolation methods and display comparisons.}
+
+
+\vspace{-0.1em}
+\subsubsection*{Code Implementation}
+% \vspace{-1em}
+\begin{lstlisting}[style=pythonStyle, caption={}]
+import cv2
+import matplotlib.pyplot as plt
+
+# Load image
+img = cv2.imread("/home/yugal/Desktop/Python Programs IP LAB/LAB 3/task_4.jpg")
+img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+h, w, c = img.shape
+
+# Downsample
+down2 = img[::2, ::2]
+down4 = img[::4, ::4]
+down8 = img[::8, ::8]
+
+# Upsample back
+def upsample(img_small):
+    return [
+        cv2.resize(img_small, (w,h), interpolation=cv2.INTER_NEAREST),
+        cv2.resize(img_small, (w,h), interpolation=cv2.INTER_LINEAR),
+        cv2.resize(img_small, (w,h), interpolation=cv2.INTER_CUBIC)
+    ]
+
+up2_nearest, up2_linear, up2_cubic = upsample(down2)
+up4_nearest, up4_linear, up4_cubic = upsample(down4)
+up8_nearest, up8_linear, up8_cubic = upsample(down8)
+
+# Arrange in 3x3 grid
+all_images = [
+    up2_nearest, up2_linear, up2_cubic,
+    up4_nearest, up4_linear, up4_cubic,
+    up8_nearest, up8_linear, up8_cubic
+]
+
+titles = [
+    "Down2 + Nearest", "Down2 + Linear", "Down2 + Cubic",
+    "Down4 + Nearest", "Down4 + Linear", "Down4 + Cubic",
+    "Down8 + Nearest", "Down8 + Linear", "Down8 + Cubic"
+]
+
+plt.figure(figsize=(12,12))
+
+for i, (im, t) in enumerate(zip(all_images, titles), 1):
+    plt.subplot(3,3,i)
+    plt.imshow(im)
+    plt.title(t, fontsize=10)
+    plt.axis("off")
+
+plt.tight_layout()
+
+plt.savefig("upsampled_grid.png", dpi=150, bbox_inches="tight")
+
+plt.show()
+
+# Save original separately
+plt.figure(figsize=(6,6))
+
+plt.imshow(img)
+
+plt.title("Original Image")
+
+plt.axis("off")
+
+plt.savefig("original_image.png", dpi=150, bbox_inches="tight")
+
+plt.show()
+    
+\end{lstlisting}
+
+\vspace{-1em} 
+\subsubsection*{Output}
+
+\begin{figure}[H]
+    \centering
+    % \vspace{-2em}
+    \includegraphics[width=1.0\textwidth]{Lab3/upsampled_grid.png}
+    \caption{Upsampled Images}
+    \label{fig:upsampled_images}
+    \vspace{-1em}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    % \vspace{-2em}
+    \includegraphics[width=0.5\textwidth]{Lab3/original_image copy.png}
+    \caption{Original Image}
+    \label{fig:original_image}
+    \vspace{-1em}
+\end{figure}
+
+
+
+%-----------------------------------------------
+% Task 5
+%-----------------------------------------------
+\subsection{Task 5: Grayscale image - quantize to 4-bit and 2-bit - show versions and compare quality.}
+
+
+\vspace{-0.1em}
+\subsubsection*{Code Implementation}
+% \vspace{-1em}
+\begin{lstlisting}[style=pythonStyle, caption={}]
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+
+# Check file
+print(os.path.exists("/home/yugal/Desktop/Python Programs IP LAB/LAB 3/task_5.jpg"))
+
+# 1. Load image
+img = cv2.imread("/home/yugal/Desktop/Python Programs IP LAB/LAB 3/task_5.jpg")
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+# 2. Quantize
+# 4-bit (16 levels)
+step4 = 16
+quant4 = (gray // step4) * step4
+
+# 2-bit (4 levels)
+step2 = 64
+quant2 = (gray // step2) * step2
+
+# 3. Compute MSE
+mse_4bit = np.mean((gray - quant4) ** 2)
+mse_2bit = np.mean((gray - quant2) ** 2)
+
+# 4. Display and save
+plt.figure(figsize=(12,4))
+
+plt.subplot(1,3,1)
+plt.imshow(gray, cmap='gray')
+plt.title("Original (8-bit)")
+plt.axis("off")
+
+plt.subplot(1,3,2)
+plt.imshow(quant4, cmap='gray')
+plt.title(f"4-bit (16 levels)\nMSE={round(mse_4bit,1)}\nQuality: Good")
+plt.axis("off")
+
+plt.subplot(1,3,3)
+plt.imshow(quant2, cmap='gray')
+plt.title(f"2-bit (4 levels)\nMSE={round(mse_2bit,1)}\nQuality: Poor")
+plt.axis("off")
+
+# Save the whole figure
+plt.tight_layout()
+plt.savefig("quantization_comparison.png", dpi=150, bbox_inches="tight")
+plt.show()
+    
+\end{lstlisting}
+
+\vspace{1em} 
+% \subsubsection*{Output}
+
+\begin{figure}[H]
+    \centering
+    % \vspace{-2em}
+    \includegraphics[width=1\textwidth]{Lab3/quantization_comparison.png}
+    \caption{Quantization Comparison}
+    \label{fig:quantization_comparison}
+    \vspace{-1em}
+\end{figure}
+
+%-----------------------------------------------
+% Task 6
+%-----------------------------------------------
+\subsection{Task 6: Convert image to grayscale, extract 3 by 3 neighborhood, apply mean sobel and sharpening filters and display results.}
+
+
+\vspace{-0.1em}
+\subsubsection*{Code Implementation}
+\vspace{-0.1em}
+\begin{lstlisting}[style=pythonStyle, caption={}]
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# ------------------------------
+# STEP 1: Load image and convert to grayscale
+# ------------------------------
+img = cv2.imread("/home/yugal/Desktop/Python Programs IP LAB/LAB 3/task_5.jpg")
+
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+# ------------------------------
+# STEP 2: Extract 3x3 neighborhood at (100,100)
+# ------------------------------
+row, col = 100, 100
+
+block = gray[row-1:row+2, col-1:col+2]
+
+print("3x3 neighborhood at (100,100):")
+
+print(block)
+
+# ------------------------------
+# STEP 3: Apply filters
+# ------------------------------
+
+# (a) Mean Filter
+mean_kernel = np.ones((3,3), np.float32) / 9
+
+mean_img = cv2.filter2D(gray, -1, mean_kernel)
+
+# (b) Sobel Edge Detection
+sobelx = cv2.Sobel(gray, cv2.CV_64F, 1, 0, ksize=3)
+sobely = cv2.Sobel(gray, cv2.CV_64F, 0, 1, ksize=3)
+sobel_img = cv2.magnitude(sobelx, sobely)
+sobel_img = np.uint8(np.clip(sobel_img, 0, 255))  # convert to uint8
+
+# (c) Sharpening
+sharpen_kernel = np.array([[0,-1,0],
+                           [-1,5,-1],
+                           [0,-1,0]])
+
+sharp_img = cv2.filter2D(gray, -1, sharpen_kernel)
+
+# ------------------------------
+# STEP 4: Save individual filtered results
+# ------------------------------
+
+def save_filtered(image, title, comment, filename):
+    plt.figure(figsize=(8,8))
+    plt.imshow(image, cmap='gray')
+    plt.axis('off')
+    plt.title(title)
+    plt.figtext(0.5, 0.2, comment, ha='center', fontsize=12)
+    plt.savefig(filename, dpi=150, bbox_inches='tight')
+    plt.close()  # close to avoid overlapping figures
+
+# Save Mean Filter
+save_filtered(mean_img, "Mean Filter (Blurry)",
+              "Comment: Mean filter smooths the image but edges are blurred.",
+              "mean_filter.png")
+
+# Save Sobel Edge Detection
+save_filtered(sobel_img, "Sobel Edges",
+              "Comment: Sobel highlights edges clearly; good for edge clarity.",
+              "sobel_edges.png")
+
+# Save Sharpened
+save_filtered(sharp_img, "Sharpened",
+              "Comment: Sharpened image enhances contrast and makes edges more prominent.",
+              "sharpened.png")
+
+print("All filtered images saved successfully.")
+   
+\end{lstlisting}
+
+\vspace{1em} 
+% \subsubsection*{Output}
+\begin{outputbox}
+3x3 neighborhood at (100,100):
+
+[[17 12 12]
+
+[17  6 11]
+
+[16  9  6]]
+
+All filtered images saved successfully.
+\end{outputbox}
+
+\begin{figure}[H]
+    \centering
+    % \vspace{-2em}
+    \includegraphics[width=0.7\textwidth]{Lab3/mean_filter.png}
+    \caption{Mean Filter}
+    \label{fig:mean_filter}
+    \vspace{-1em}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    % \vspace{-2em}
+    \includegraphics[width=0.8\textwidth]{Lab3/sobel_edges.png}
+    \caption{Sobel Edges}
+    \label{fig:sobel_edges}
+    \vspace{-1em}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    % \vspace{-2em}
+    \includegraphics[width=1\textwidth]{Lab3/sharpened.png}
+    \caption{Sharpened}
+    \label{fig:sharpened}
+    \vspace{-1em}
+\end{figure}
+
+
+%-----------------------------------------------
+% End of Assignment 3
+%-----------------------------------------------
+

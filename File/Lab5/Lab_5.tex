@@ -1,0 +1,662 @@
+%-----------------------------------------------
+% Assignment 5: Morphological Image Processing
+%-----------------------------------------------
+\setcounter{section}{4}       % last completed section was 4 → next = 5
+\refstepcounter{section}      % now section = 5
+\renewcommand{\thesection}{\arabic{section}} % ensure "5", not "4.1"
+
+% --- Add to ToC with date ---
+\addcontentsline{toc}{section}
+  {Assignment \thesection: Morphological Image Processing \hfill 03-11-2025}
+
+% --- Centered visible title ---
+\section*{\centering Assignment \thesection: Morphological Image Processing}
+
+% --- Objective text ---
+\noindent \textbf{Objective:} To implement and analyze fundamental morphological
+operations (dilation, erosion, opening, closing) and advanced algorithms (boundary
+extraction, hole filling, connected components) using Python (OpenCV and NumPy).
+
+\vspace{-1em}
+
+% --- Reset subsections to get 5.1, 5.2, etc. ---
+\setcounter{subsection}{0}
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+
+%-----------------------------------------------
+% Task 1
+%-----------------------------------------------
+\subsection{Task 1: Basic Morphological Operations (Binary Images)}
+\subsubsection*{Code Implementation}
+\begin{lstlisting}[style=pythonStyle]
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+
+# -------------------------------
+# Step 1: Load Binary Image
+# -------------------------------
+img_path = "/home/yugal/Desktop/Python Programs IP LAB/LAB 5/Images/Handwritten_Digit.jpeg"
+save_dir = "/home/yugal/Desktop/Python Programs IP LAB/LAB 5/Results/"
+os.makedirs(save_dir, exist_ok=True)
+
+# Read image and convert to grayscale
+img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+
+# Threshold to convert into binary image
+_, binary = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY_INV)
+cv2.imwrite(save_dir + "binary_image.png", binary)
+
+# -------------------------------
+# Step 2: Define Structuring Elements
+# -------------------------------
+kernel_square = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
+kernel_cross = cv2.getStructuringElement(cv2.MORPH_CROSS, (5, 5))
+kernel_ellipse = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+
+# -------------------------------
+# Step 3: Apply Erosion
+# -------------------------------
+erosion_square = cv2.erode(binary, kernel_square, iterations=1)
+erosion_cross = cv2.erode(binary, kernel_cross, iterations=1)
+erosion_ellipse = cv2.erode(binary, kernel_ellipse, iterations=1)
+
+cv2.imwrite(save_dir + "erosion_square.png", erosion_square)
+cv2.imwrite(save_dir + "erosion_cross.png", erosion_cross)
+cv2.imwrite(save_dir + "erosion_ellipse.png", erosion_ellipse)
+
+# -------------------------------
+# Step 4: Apply Dilation
+# -------------------------------
+dilation_square = cv2.dilate(binary, kernel_square, iterations=1)
+dilation_cross = cv2.dilate(binary, kernel_cross, iterations=1)
+dilation_ellipse = cv2.dilate(binary, kernel_ellipse, iterations=1)
+
+cv2.imwrite(save_dir + "dilation_square.png", dilation_square)
+cv2.imwrite(save_dir + "dilation_cross.png", dilation_cross)
+cv2.imwrite(save_dir + "dilation_ellipse.png", dilation_ellipse)
+
+# -------------------------------
+# Step 5: Display Results
+# -------------------------------
+plt.figure(figsize=(12, 8))
+
+# Original binary
+plt.subplot(3, 4, 1), plt.imshow(binary, cmap='gray')
+plt.title("Original Binary"), plt.axis('off')
+
+# Erosion results
+plt.subplot(3, 4, 2), plt.imshow(erosion_square, cmap='gray')
+plt.title("Erosion - Square"), plt.axis('off')
+plt.subplot(3, 4, 3), plt.imshow(erosion_cross, cmap='gray')
+plt.title("Erosion - Cross"), plt.axis('off')
+plt.subplot(3, 4, 4), plt.imshow(erosion_ellipse, cmap='gray')
+plt.title("Erosion - Ellipse"), plt.axis('off')
+
+# Dilation results
+plt.subplot(3, 4, 6), plt.imshow(dilation_square, cmap='gray')
+plt.title("Dilation - Square"), plt.axis('off')
+plt.subplot(3, 4, 7), plt.imshow(dilation_cross, cmap='gray')
+plt.title("Dilation - Cross"), plt.axis('off')
+plt.subplot(3, 4, 8), plt.imshow(dilation_ellipse, cmap='gray')
+plt.title("Dilation - Ellipse"), plt.axis('off')
+
+plt.tight_layout()
+plt.savefig(save_dir + "morphological_results.png", dpi=200, bbox_inches='tight')
+plt.show()
+
+# -------------------------------
+# Step 6: Reflection / Answer Q1
+# -------------------------------
+reflection_q1 = """
+Reflection (Q1) - Basic Morphological Operations:
+
+1. Erosion:
+   - Removes small white noise and shrinks bright regions.
+   - Useful when we want to eliminate thin or isolated structures (e.g., remove small specks in satellite images).
+   - However, it can also make fine roads or thin objects disappear.
+
+2. Dilation:
+   - Expands bright regions and fills small gaps.
+   - Useful to enhance or connect fragmented road lines in satellite images.
+   - May also increase noise size if not used carefully.
+
+3. Structuring Elements:
+   - Square: Strong effect; removes or expands evenly in all directions.
+   - Cross: Preserves straight lines better (vertical/horizontal).
+   - Ellipse: Smooths boundaries, good for round objects or curved roads.
+
+Conclusion:
+- For noise removal: Erosion (with small kernel).
+- For road enhancement: Dilation (preferably with cross or ellipse kernel).
+"""
+print(reflection_q1)
+
+\end{lstlisting}
+\begin{outputbox}
+    Reflection (Q1) - Basic Morphological Operations:
+    
+1. Erosion:
+
+   - Removes small white noise and shrinks bright regions.
+
+   - Useful when we want to eliminate thin or isolated structures (e.g., remove small specks in satellite images).
+
+   - However, it can also make fine roads or thin objects disappear.
+
+2. Dilation:
+
+   - Expands bright regions and fills small gaps.
+
+   - Useful to enhance or connect fragmented road lines in satellite images.
+
+   - May also increase noise size if not used carefully.
+
+3. Structuring Elements:
+
+   - Square: Strong effect; removes or expands evenly in all directions.
+
+   - Cross: Preserves straight lines better (vertical/horizontal).
+   
+   - Ellipse: Smooths boundaries, good for round objects or curved roads.
+
+Conclusion:
+
+- For noise removal: Erosion (with small kernel).
+
+- For road enhancement: Dilation (preferably with cross or ellipse kernel).
+\end{outputbox}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Lab5/Results/morphological_results.png}
+    \caption{Basic Morphological Operations (Erosion and Dilation) with Different Structuring Elements}
+\end{figure}
+% -----------------------------------------------
+% Task 2
+%-----------------------------------------------
+\subsection{Task 2: Opening and Closing in Real-World Applications}
+\subsection*{Code Implementation}
+\begin{lstlisting}[style=pythonStyle]
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+
+# -------------------------------
+# Step 1: Load Grayscale X-Ray Image
+# -------------------------------
+img_path = "/home/yugal/Desktop/Python Programs IP LAB/LAB 5/Images/X_Ray_Image.jpg"
+save_dir = "/home/yugal/Desktop/Python Programs IP LAB/LAB 5/Results/"
+os.makedirs(save_dir, exist_ok=True)
+
+# Read and convert to grayscale
+img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+img = cv2.resize(img, (256, 256))
+cv2.imwrite(save_dir + "original_xray.png", img)
+
+# -------------------------------
+# Step 2: Define Structuring Element
+# -------------------------------
+kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+
+# -------------------------------
+# Step 3: Apply Opening (Erosion followed by Dilation)
+# -------------------------------
+opening = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
+cv2.imwrite(save_dir + "opening_xray.png", opening)
+
+# -------------------------------
+# Step 4: Apply Closing (Dilation followed by Erosion)
+# -------------------------------
+closing = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
+cv2.imwrite(save_dir + "closing_xray.png", closing)
+
+# -------------------------------
+# Step 5: Display Results
+# -------------------------------
+plt.figure(figsize=(10, 8))
+
+plt.subplot(1, 3, 1), plt.imshow(img, cmap='gray')
+plt.title("Original X-Ray"), plt.axis('off')
+
+plt.subplot(1, 3, 2), plt.imshow(opening, cmap='gray')
+plt.title("After Opening"), plt.axis('off')
+
+plt.subplot(1, 3, 3), plt.imshow(closing, cmap='gray')
+plt.title("After Closing"), plt.axis('off')
+
+plt.tight_layout()
+plt.savefig(save_dir + "opening_closing_results.png", dpi=200, bbox_inches='tight')
+plt.show()
+
+# -------------------------------
+# Step 6: Reflection / Answer Q2
+# -------------------------------
+reflection_q2 = """
+Reflection (Q2) - Opening and Closing in Real-World Applications:
+
+1. Opening:
+   - Performs erosion followed by dilation.
+   - Removes small bright spots or white noise in the X-ray.
+   - Helps clean unwanted highlights caused by imaging artifacts.
+
+2. Closing:
+   - Performs dilation followed by erosion.
+   - Fills small dark holes or gaps in bright bone regions.
+   - Makes bone structures appear more continuous and complete.
+
+Observation:
+- Opening reduces bright noise, improving smoothness.
+- Closing fills tiny gaps, enhancing bone connectivity.
+- Together, they make medical X-ray images cleaner and more suitable for analysis.
+
+Conclusion:
+Opening → Removes small bright noise.
+Closing → Fills small dark gaps.
+Both are complementary morphological operations used in medical image enhancement.
+"""
+print(reflection_q2)
+\end{lstlisting}
+\begin{outputbox}
+   Reflection (Q2) - Opening and Closing in Real-World Applications:
+
+1. Opening:
+
+   - Performs erosion followed by dilation.
+
+   - Removes small bright spots or white noise in the X-ray.
+
+   - Helps clean unwanted highlights caused by imaging artifacts.
+
+2. Closing:
+ 
+   - Performs dilation followed by erosion.
+
+   - Fills small dark holes or gaps in bright bone regions.
+
+   - Makes bone structures appear more continuous and complete.
+
+Observation:
+
+- Opening reduces bright noise, improving smoothness.
+
+- Closing fills tiny gaps, enhancing bone connectivity.
+
+- Together, they make medical X-ray images cleaner and more suitable for analysis.
+
+Conclusion:
+
+Opening → Removes small bright noise.
+
+Closing → Fills small dark gaps.
+
+Both are complementary morphological operations used in medical image enhancement.
+
+\end{outputbox}
+
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=1.0\textwidth]
+   {Lab5/Results/opening_closing_results.png}
+   \caption{Opening and Closing on X-Ray Image}
+\end{figure}
+
+%-----------------------------------------------
+% Task 3
+%-----------------------------------------------
+\subsection{Task 3: Boundary Extraction}
+\subsection*{Code Implementation}
+\begin{lstlisting}[style=pythonStyle]
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+
+# -------------------------------
+# Step 1: Load Image (Coins)
+# -------------------------------
+img_path = "/home/yugal/Desktop/Python Programs IP LAB/LAB 5/Images/Coin.jpg"
+save_dir = "/home/yugal/Desktop/Python Programs IP LAB/LAB 5/Results/"
+os.makedirs(save_dir, exist_ok=True)
+
+# Read grayscale and resize
+img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+img = cv2.resize(img, (256, 256))
+cv2.imwrite(save_dir + "original_coin.png", img)
+
+# -------------------------------
+# Step 2: Threshold to Binary (Invert for white object on black)
+# -------------------------------
+_, binary = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+cv2.imwrite(save_dir + "binary_coin_inverted.png", binary)
+
+# -------------------------------
+# Step 3: Define Structuring Element
+# -------------------------------
+kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
+
+# -------------------------------
+# Step 4: Perform Erosion
+# -------------------------------
+eroded = cv2.erode(binary, kernel)
+cv2.imwrite(save_dir + "eroded_coin_fixed.png", eroded)
+
+# -------------------------------
+# Step 5: Boundary Extraction
+# -------------------------------
+boundary = cv2.subtract(binary, eroded)
+boundary_vis = cv2.bitwise_not(boundary)  # Invert for better visibility
+cv2.imwrite(save_dir + "boundary_coin_clear.png", boundary_vis)
+
+# -------------------------------
+# Step 6: Display Results (Include Original)
+# -------------------------------
+plt.figure(figsize=(10, 10))
+
+plt.subplot(2, 2, 1), plt.imshow(img, cmap='gray')
+plt.title("Original Image"), plt.axis('off')
+
+plt.subplot(2, 2, 2), plt.imshow(binary, cmap='gray')
+plt.title("Binary (Inverted) Image"), plt.axis('off')
+
+plt.subplot(2, 2, 3), plt.imshow(eroded, cmap='gray')
+plt.title("Eroded Image"), plt.axis('off')
+
+plt.subplot(2, 2, 4), plt.imshow(boundary_vis, cmap='gray')
+plt.title("Extracted Boundary"), plt.axis('off')
+
+plt.tight_layout()
+plt.savefig(save_dir + "boundary_extraction_full.png", dpi=200, bbox_inches='tight')
+plt.show()
+
+# -------------------------------
+# Step 7: Reflection / Answer Q3
+# -------------------------------
+reflection_q3 = """
+Reflection (Q3) - Boundary Extraction (Final Version):
+
+1. Concept:
+   - Boundary extraction isolates the outer edges using:
+     Boundary(A) = A - (A ⊖ B)
+   - Erosion shrinks the object; subtraction leaves only boundary pixels.
+
+2. Correction:
+   - The coin image had dark objects on a bright background.
+   - We inverted it first, so coins became white on black.
+   - This made the boundaries more visible after subtraction.
+
+3. Observation:
+   - The final boundary image clearly highlights the outer rim of the coin.
+   - Inner textures are removed, leaving only the outline.
+
+Conclusion:
+Morphological boundary extraction works effectively for edge detection
+when objects are white on a black background.
+"""
+print(reflection_q3)
+\end{lstlisting}
+\begin{outputbox}
+Reflection (Q3) - Boundary Extraction (Final Version):
+
+1. Concept:
+
+   - Boundary extraction isolates the outer edges using:
+
+      Boundary(A) = A - (A $\ominus$ B)
+
+   - Erosion shrinks the object; subtraction leaves only boundary pixels.
+
+2. Correction:
+   
+   - The coin image had dark objects on a bright background.
+
+   - We inverted it first, so coins became white on black.
+
+   - This made the boundaries more visible after subtraction.
+
+3. Observation:
+
+   - The final boundary image clearly highlights the outer rim of the coin.
+
+   - Inner textures are removed, leaving only the outline.
+
+Conclusion:
+
+Morphological boundary extraction works effectively for edge detection
+when objects are white on a black background.
+
+\end{outputbox}
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=1.0\textwidth]
+   {Lab5/Results/boundary_extraction_full.png}
+   \caption{Boundary Extraction Process on Coin Image}
+\end{figure}
+%-----------------------------------------------
+% Task 4
+%-----------------------------------------------
+\subsection{Task 4: Hole Filling}
+\subsection*{Code Implementation}
+\begin{lstlisting}[style=pythonStyle]
+   import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+
+# ---- Paths ----
+img_path = "/home/yugal/Desktop/Python Programs IP LAB/LAB 5/Images/Scanned_Doc.png"
+results_dir = "/home/yugal/Desktop/Python Programs IP LAB/LAB 5/Results/"
+
+# Ensure results folder exists
+os.makedirs(results_dir, exist_ok=True)
+
+# ---- Load Image ----
+img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+
+# ---- Threshold to Binary ----
+_, binary = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY_INV)
+
+# ---- Copy for Flood Fill ----
+h, w = binary.shape[:2]
+mask = np.zeros((h + 2, w + 2), np.uint8)
+im_floodfill = binary.copy()
+
+# Flood fill from top-left corner
+cv2.floodFill(im_floodfill, mask, (0, 0), 255)
+
+# ---- Invert Floodfilled Image ----
+im_floodfill_inv = cv2.bitwise_not(im_floodfill)
+
+# ---- Combine to get filled image ----
+filled_image = binary | im_floodfill_inv
+
+# ---- Save Individual Images ----
+cv2.imwrite(os.path.join(results_dir, "1_Original_Grayscale.png"), img)
+cv2.imwrite(os.path.join(results_dir, "2_Binary_Inverted.png"), binary)
+cv2.imwrite(os.path.join(results_dir, "3_Hole_Filled.png"), filled_image)
+
+# ---- Create Combined Display ----
+plt.figure(figsize=(12, 5))
+
+plt.subplot(1, 3, 1)
+plt.title("Original Grayscale")
+plt.imshow(img, cmap='gray')
+plt.axis('off')
+
+plt.subplot(1, 3, 2)
+plt.title("Binary Image (Inverted)")
+plt.imshow(binary, cmap='gray')
+plt.axis('off')
+
+plt.subplot(1, 3, 3)
+plt.title("After Hole Filling")
+plt.imshow(filled_image, cmap='gray')
+plt.axis('off')
+
+plt.tight_layout()
+
+# Save combined figure
+combined_path = os.path.join(results_dir, "4_Combined_Result.png")
+plt.savefig(combined_path, bbox_inches='tight')
+plt.show()
+
+# ---- Reflection ----
+print("""
+Reflection (Q4) - Hole Filling:
+
+1. Concept:
+   - Hole filling identifies and fills white gaps enclosed within black objects.
+   - Achieved using morphological reconstruction (flood fill).
+
+2. Observation:
+   - Original image had letters like O, P, R with inner holes.
+   - After filling, these holes are removed and letters become solid.
+
+3. Application:
+   - Useful in document image analysis, OCR preprocessing, and coin detection.
+""")
+
+\end{lstlisting}
+\begin{outputbox}
+   Reflection (Q4) - Hole Filling:
+
+1. Concept:
+
+   - Hole filling identifies and fills white gaps enclosed within black objects.
+
+   - Achieved using morphological reconstruction (flood fill).
+
+2. Observation:
+
+   - Original image had letters like O, P, R with inner holes.
+
+   - After filling, these holes are removed and letters become solid.
+
+3. Application:
+
+- Useful in document image analysis, OCR preprocessing, and coin detection.
+
+\end{outputbox}
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=1.0\textwidth]{Lab5/Results/Hole_Filling.png}
+   \caption{Hole Filling Process}
+\end{figure}
+% -----------------------------------------------
+% Task 5
+% -----------------------------------------------
+\subsection{Task 5: Connected Components Analysis}
+\subsection*{Code Implementation}
+\begin{lstlisting}[style=pythonStyle]
+   import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+import os
+
+# -------------------------------
+# Step 1: Setup paths
+# -------------------------------
+img_path = "/home/yugal/Desktop/Python Programs IP LAB/LAB 5/Images/Drone_Captured_Image.jpeg"
+save_dir = "/home/yugal/Desktop/Python Programs IP LAB/LAB 5/Results/"
+os.makedirs(save_dir, exist_ok=True)
+
+# -------------------------------
+# Step 2: Load and preprocess image
+# -------------------------------
+img = cv2.imread(img_path)
+img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+cv2.imwrite(save_dir + "original_gray.png", img_gray)
+
+# Threshold (binary) - plants/objects as white
+_, binary = cv2.threshold(img_gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+cv2.imwrite(save_dir + "binary_image.png", binary)
+
+# Optional: Morphological opening to remove small noise
+kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3,3))
+cleaned = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel, iterations=2)
+cv2.imwrite(save_dir + "cleaned_binary.png", cleaned)
+
+# -------------------------------
+# Step 3: Connected Components Labeling
+# -------------------------------
+num_labels, labels = cv2.connectedComponents(cleaned)
+
+# Map labels to colors
+label_hue = np.uint8(179 * labels / np.max(labels))
+blank_ch = 255 * np.ones_like(label_hue)
+colored_labels = cv2.merge([label_hue, blank_ch, blank_ch])
+colored_labels = cv2.cvtColor(colored_labels, cv2.COLOR_HSV2BGR)
+colored_labels[label_hue == 0] = 0  # Background black
+
+cv2.imwrite(save_dir + "labeled_components.png", colored_labels)
+
+# -------------------------------
+# Step 4: Display results
+# -------------------------------
+plt.figure(figsize=(12,6))
+plt.subplot(1,3,1), plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)), plt.title("Original Drone Image"), plt.axis('off')
+plt.subplot(1,3,2), plt.imshow(binary, cmap='gray'), plt.title("Binary Image"), plt.axis('off')
+plt.subplot(1,3,3), plt.imshow(cv2.cvtColor(colored_labels, cv2.COLOR_BGR2RGB)), plt.title("Labeled Components"), plt.axis('off')
+plt.tight_layout()
+plt.savefig(save_dir + "connected_components_result.png", dpi=200, bbox_inches='tight')
+plt.show()
+
+# -------------------------------
+# Step 5: Reflection / Analysis
+# -------------------------------
+reflection_q5 = f"""
+Reflection (Q5) - Connected Components Analysis:
+
+1. Concept:
+   - Connected component labeling assigns a unique label to each distinct object in a binary image.
+   - Useful in counting, measuring, or identifying individual objects like plants or cells.
+
+2. Observations:
+   - Total number of detected objects: {num_labels - 1} (excluding background).
+   - Morphological opening helped remove small noise before labeling.
+   - Each object is displayed in a unique color in the labeled output.
+
+3. Application:
+   - In agriculture: counting plants from drone or satellite images.
+   - In biomedicine: identifying and analyzing cells in microscopy images.
+"""
+
+print(reflection_q5)
+
+\end{lstlisting}
+
+\begin{outputbox}
+   Reflection (Q5) - Connected Components Analysis:
+
+1. Concept:
+
+   - Connected component labeling assigns a unique label to each distinct object in a binary image.
+
+   - Useful in counting, measuring, or identifying individual objects like plants or cells.
+
+2. Observations:
+
+   - Total number of detected objects: 19 (excluding background).
+
+   - Morphological opening helped remove small noise before labeling.
+
+   - Each object is displayed in a unique color in the labeled output.
+
+3. Application:
+
+   - In agriculture: counting plants from drone or satellite images.
+
+   - In biomedicine: identifying and analyzing cells in microscopy images.
+
+\end{outputbox}
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=1.0\textwidth]{Lab5/Results/connected_components_result.png}
+   \caption{Connected Components Analysis on Drone-Captured Image}
+\end{figure}
+% -----------------------------------------------
+% End of Lab 5
+% -----------------------------------------------
+

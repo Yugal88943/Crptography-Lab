@@ -1,0 +1,22 @@
+{
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk (xelatex)",
+      "command": "latexmk",
+      "args": [
+        "-xelatex",                // <— tells latexmk to use XeLaTeX
+        "-shell-escape",
+        "-interaction=nonstopmode",
+        "-synctex=1",
+        "%DOC%"
+      ]
+    }
+  ],
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk ➜ XeLaTeX (Unicode safe)",
+      "tools": ["latexmk (xelatex)"]
+    }
+  ],
+  "latex-workshop.latex.recipe.default": "latexmk ➜ XeLaTeX (Unicode safe)"
+}
