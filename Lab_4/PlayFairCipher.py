@@ -1,16 +1,3 @@
-
-% Assignment 4: Perform encryption and decryption using Playfair cipher.
-%-----------------------------------------------
-\refstepcounter{section}
-\addlabcontentsline{Assignment \thesection: Perform encryption and decryption using Playfair cipher.}
-{(18-02-2026)}{\thepage}
-\section*{\centering Assignment \thesection: Perform encryption and decryption using Playfair cipher.}
-
-%-----------------------------------------------
-% Task 1
-% -----------------------------------------------
-\subsection{Implement  Playfair Cipher in Python.}
-\begin{lstlisting}[style=pythonStyle, caption={}]
 # ---------- Create Playfair Matrix ----------
 def create_matrix(key):
     key = key.lower().replace("j", "i")
@@ -47,7 +34,7 @@ def prepare_text(text):
         if i+1 < len(text):
             b = text[i+1]
 
-        if a == b:         # same letters - add x
+        if a == b:         # same letters → add x
             pairs.append(a + "x")
             i += 1
         else:
@@ -150,17 +137,3 @@ while True:
     if again == "no":
         print("Exiting program.")
         break
-
-\end{lstlisting}
-\subsubsection*{Output}
-% \vspace{-1em}
-\begin{figure}[H]
-    \centering
-    \vspace{-1em}
-    \includegraphics[width=1.0\textwidth]{Lab4/Images/play_fair.png}
-    \caption{Program to implement Playfair Cipher}
-    \label{fig:playfair_cipher}
-\end{figure}
-
-
-

@@ -344,6 +344,9 @@ INPUT Lab2/Lab_2.aux
 INPUT ./Lab3/Lab_3.aux
 INPUT ./Lab3/Lab_3.aux
 INPUT Lab3/Lab_3.aux
+INPUT ./Lab4/Lab_4.aux
+INPUT ./Lab4/Lab_4.aux
+INPUT Lab4/Lab_4.aux
 OUTPUT main.aux
 INPUT /usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -484,6 +487,17 @@ INPUT ./Lab3/Images/Rail_Fence_Cipher.png
 INPUT ./Lab3/Images/Rail_Fence_Cipher.png
 INPUT ./Lab3/Images/Rail_Fence_Cipher.png
 INPUT ./Lab3/Images/Rail_Fence_Cipher.png
+INPUT ./Lab4/Lab_4.tex
+INPUT ./Lab4/Lab_4.tex
+OUTPUT Lab4/Lab_4.aux
+INPUT ./Lab4/Lab_4.tex
+INPUT ./Lab4/Lab_4.tex
+INPUT Lab4/Lab_4.tex
+INPUT ./Lab4/Images/play_fair.png
+INPUT ./Lab4/Images/play_fair.png
+INPUT ./Lab4/Images/play_fair.png
+INPUT ./Lab4/Images/play_fair.png
+INPUT ./Lab4/Images/play_fair.png
 INPUT main.aux
 INPUT ./title_page.aux
 INPUT ./title_page.aux
@@ -497,6 +511,9 @@ INPUT Lab2/Lab_2.aux
 INPUT ./Lab3/Lab_3.aux
 INPUT ./Lab3/Lab_3.aux
 INPUT Lab3/Lab_3.aux
+INPUT ./Lab4/Lab_4.aux
+INPUT ./Lab4/Lab_4.aux
+INPUT Lab4/Lab_4.aux
 INPUT ./main.out
 INPUT ./main.out
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx10.pfb

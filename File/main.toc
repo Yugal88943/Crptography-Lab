@@ -9,3 +9,5 @@
 \noindent \textbf {Assignment 3: Vigenere Cipher and Rail Fence Cipher}\hfill \textbf {(11-02-2026)}\hfill \textbf {11}\par 
 \contentsline {subsection}{\numberline {3.1}Implement Vigenere Cipher in Python.}{11}{subsection.3.1}%
 \contentsline {subsection}{\numberline {3.2}Implement Rail Fence Cipher in Python.}{12}{subsection.3.2}%
+\noindent \textbf {Assignment 4: Perform encryption and decryption using Playfair cipher.}\hfill \textbf {(18-02-2026)}\hfill \textbf {15}\par 
+\contentsline {subsection}{\numberline {4.1}Implement Playfair Cipher in Python.}{15}{subsection.4.1}%

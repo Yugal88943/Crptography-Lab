@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.11.9)  15 FEB 2026 19:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.11.9)  18 FEB 2026 15:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1011,7 +1011,7 @@ Package: makeidx 2021/10/04 v1.0m Standard LaTeX package
 
 
 Writing index file main.idx
-(./main.aux (./title_page.aux) (./Lab1/Lab_1.aux) (./Lab2/Lab_2.aux) (./Lab3/Lab_3.aux))
+(./main.aux (./title_page.aux) (./Lab1/Lab_1.aux) (./Lab2/Lab_2.aux) (./Lab3/Lab_3.aux) (./Lab4/Lab_4.aux))
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 113.
@@ -1121,7 +1121,7 @@ Package gensymb Info: Using \textmu for \micro on input line 113.
 \openout2 = `title_page.aux'.
 
  (./title_page.tex
-<logo_250_1 (1).png, id=35, 60.225pt x 60.225pt>
+<logo_250_1 (1).png, id=39, 60.225pt x 60.225pt>
 File: logo_250_1 (1).png Graphic file (type png)
 <use logo_250_1 (1).png>
 Package pdftex.def Info: logo_250_1 (1).png  used on input line 30.
@@ -1162,7 +1162,7 @@ File: t5cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `T5/cmtt/bx/n' in size <10> not available
 (Font)              Font shape `T5/cmtt/m/n' tried instead on input line 15.
-<Lab1/Images/program1.png, id=78, 1371.1225pt x 159.59625pt>
+<Lab1/Images/program1.png, id=85, 1371.1225pt x 159.59625pt>
 File: Lab1/Images/program1.png Graphic file (type png)
 <use Lab1/Images/program1.png>
 Package pdftex.def Info: Lab1/Images/program1.png  used on input line 49.
@@ -1172,13 +1172,13 @@ Package pdftex.def Info: Lab1/Images/program1.png  used on input line 49.
 
 
  <./Lab1/Images/program1.png>] [2]
-<Lab1/Images/program2.png, id=158, 1065.9825pt x 682.55pt>
+<Lab1/Images/program2.png, id=165, 1065.9825pt x 682.55pt>
 File: Lab1/Images/program2.png Graphic file (type png)
 <use Lab1/Images/program2.png>
 Package pdftex.def Info: Lab1/Images/program2.png  used on input line 127.
 (pdftex.def)             Requested size: 455.24411pt x 291.49112pt.
  [3] [4 <./Lab1/Images/program2.png>]
-<Lab1/Images/program3.png, id=215, 1062.97125pt x 200.75pt>
+<Lab1/Images/program3.png, id=222, 1062.97125pt x 200.75pt>
 File: Lab1/Images/program3.png Graphic file (type png)
 <use Lab1/Images/program3.png>
 Package pdftex.def Info: Lab1/Images/program3.png  used on input line 202.
@@ -1191,13 +1191,13 @@ Package pdftex.def Info: Lab1/Images/program3.png  used on input line 202.
 
 
 ]
-<Lab2/Images/Caesor_Substitution_Cipher.png, id=312, 1253.68375pt x 339.2675pt>
+<Lab2/Images/Caesor_Substitution_Cipher.png, id=319, 1253.68375pt x 339.2675pt>
 File: Lab2/Images/Caesor_Substitution_Cipher.png Graphic file (type png)
 <use Lab2/Images/Caesor_Substitution_Cipher.png>
 Package pdftex.def Info: Lab2/Images/Caesor_Substitution_Cipher.png  used on input line 61.
 (pdftex.def)             Requested size: 455.24411pt x 123.19745pt.
  [8 <./Lab2/Images/Caesor_Substitution_Cipher.png>] [9]
-<Lab2/Images/Hill_Cipher.png, id=396, 1246.6575pt x 488.82625pt>
+<Lab2/Images/Hill_Cipher.png, id=403, 1246.6575pt x 488.82625pt>
 File: Lab2/Images/Hill_Cipher.png Graphic file (type png)
 <use Lab2/Images/Hill_Cipher.png>
 Package pdftex.def Info: Lab2/Images/Hill_Cipher.png  used on input line 167.
@@ -1210,38 +1210,51 @@ Package pdftex.def Info: Lab2/Images/Hill_Cipher.png  used on input line 167.
 
 
 ]
-<Lab3/Images/Vigenere_Cipher.png, id=472, 1239.63126pt x 329.23pt>
+<Lab3/Images/Vigenere_Cipher.png, id=479, 1239.63126pt x 329.23pt>
 File: Lab3/Images/Vigenere_Cipher.png Graphic file (type png)
 <use Lab3/Images/Vigenere_Cipher.png>
 Package pdftex.def Info: Lab3/Images/Vigenere_Cipher.png  used on input line 80.
 (pdftex.def)             Requested size: 455.24411pt x 120.9039pt.
  [12 <./Lab3/Images/Vigenere_Cipher.png>] [13]
-<Lab3/Images/Rail_Fence_Cipher.png, id=556, 1257.69875pt x 326.21875pt>
+<Lab3/Images/Rail_Fence_Cipher.png, id=563, 1257.69875pt x 326.21875pt>
 File: Lab3/Images/Rail_Fence_Cipher.png Graphic file (type png)
 <use Lab3/Images/Rail_Fence_Cipher.png>
 Package pdftex.def Info: Lab3/Images/Rail_Fence_Cipher.png  used on input line 174.
 (pdftex.def)             Requested size: 455.24411pt x 118.08078pt.
-) [14 <./Lab3/Images/Rail_Fence_Cipher.png>] (./main.aux (./title_page.aux) (./Lab1/Lab_1.aux) (./Lab2/Lab_2.aux) (./Lab3/Lab_3.aux))
+) [14 <./Lab3/Images/Rail_Fence_Cipher.png>]
+\openout2 = `Lab4/Lab_4.aux'.
+
+ (./Lab4/Lab_4.tex [15
+
+
+
+] [16] [17]
+<Lab4/Images/play_fair.png, id=739, 912.40875pt x 322.20375pt>
+File: Lab4/Images/play_fair.png Graphic file (type png)
+<use Lab4/Images/play_fair.png>
+Package pdftex.def Info: Lab4/Images/play_fair.png  used on input line 160.
+(pdftex.def)             Requested size: 455.24411pt x 160.76224pt.
+) [18 <./Lab4/Images/play_fair.png>] (./main.aux (./title_page.aux) (./Lab1/Lab_1.aux) (./Lab2/Lab_2.aux) (./Lab3/Lab_3.aux) (./Lab4/Lab_4.aux))
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 78DF79C35FB5D022E4487AB5BD02254E;1982.
+(rerunfilecheck)             Checksum: 6E2704D34A5C655D0200CE5DB01E71B2;2222.
  ) 
 Here is how much of TeX's memory you used:
- 37854 strings out of 474222
- 769426 string characters out of 5748733
+ 38053 strings out of 474222
+ 772710 string characters out of 5748733
  2247975 words of memory out of 5000000
- 59062 multiletter control sequences out of 15000+600000
+ 59104 multiletter control sequences out of 15000+600000
  575756 words of font info for 71 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  90i,12n,93p,518b,2563s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vnti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/vntex/vnr/vntt10.pfb>
-Output written on main.pdf (17 pages, 491559 bytes).
+Output written on main.pdf (21 pages, 548170 bytes).
 PDF statistics:
- 719 PDF objects out of 1000 (max. 8388607)
- 670 compressed objects within 7 object streams
- 471 named destinations out of 1000 (max. 500000)
- 109 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 918 PDF objects out of 1000 (max. 8388607)
+ 862 compressed objects within 9 object streams
+ 620 named destinations out of 1000 (max. 500000)
+ 122 words of extra memory for PDF output out of 10000 (max. 10000000)
 
