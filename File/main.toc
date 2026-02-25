@@ -11,3 +11,6 @@
 \contentsline {subsection}{\numberline {3.2}Implement Rail Fence Cipher in Python.}{12}{subsection.3.2}%
 \noindent \textbf {Assignment 4: Perform encryption and decryption using Playfair cipher.}\hfill \textbf {(18-02-2026)}\hfill \textbf {15}\par 
 \contentsline {subsection}{\numberline {4.1}Implement Playfair Cipher in Python.}{15}{subsection.4.1}%
+\noindent \textbf {Assignment 5: Perform encryption and decryption using columnar transposition and one-time padding cipher.}\hfill \textbf {(25-02-2026)}\hfill \textbf {19}\par 
+\contentsline {subsection}{\numberline {5.1}Implement Columnar Transposition Cipher in Python.}{19}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Implement One-Time Pad Cipher in Python.}{21}{subsection.5.2}%
